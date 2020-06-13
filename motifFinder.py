@@ -4,32 +4,40 @@
 Given two strings, s and t, will return the index of t as a substring of
 s. Note location of a substring, t, in a string of DNA, s, is denoted
 as the total number of bases, including itself, to its left.
+
 Created on Fri Jun 12 07:31:14 2020
 
 @author: bram
 """
+# Import modules
 from typing import List 
 
 # Sequence and subsequence 
 s = "GATATATGCATATACTTATATTT"
 t = "ATAT"
 
-# Window of length t, increases by step count of 1 and looks for match 
-# each time the window is moved. If match is found, index is added 
-# to list. If no match is found the wondow moves again. 
+# Sliding window function
 def window(string: str, substring: str) -> List:
-    winSize = len(substring)
-    i = iter(string)
-    win = []
+    """
+    Generator. Yields window equal to the length of the substring. Each iteration moves the 
+    window 1 position.
+    """
+    winSize = len(substring) # Size of the window
+    i = iter(string) # Iterable 
+    win = [] 
     
     for e in range(0, winSize):
         win.append(next(i))
     yield win
     
     for e in i:
-        win = win[1:] + [e]
-        print(win)
+        win = win[1:] + [e] 
         yield win
 
-main = window(s, t)
-print(main)
+# Count the number of steps
+count = 1
+
+for w in window(s, t):
+    if w == list(t):
+        print(f"match at {count}") # print position of the match 
+    count += 1 # Increase count 
